@@ -11,7 +11,43 @@ function UseState({ name }) {
     confirmed: false, //confirmar la eliminacion
   });
 
-  console.log(state);
+  const onConfirm = () => {
+    setState({
+      ...state,
+      loading: false,
+      error: false,
+      confirmed: true,
+    });
+  };
+
+  const onError = () => {
+    setState({
+      ...state,
+      loading: false,
+      error: true,
+    });
+  };
+
+  const onWrite = (newValue) => {
+    setState({ ...state, value: newValue });
+  };
+
+  const onCheck = () => {
+    setState({ ...state, loading: true });
+  };
+
+  const onDelete = () => {
+    setState({ ...state, deleted: true });
+  };
+
+  const onReset = () => {
+    setState({
+      ...state,
+      confirmed: false,
+      deleted: false,
+      value: "",
+    });
+  };
 
   React.useEffect(() => {
     console.log("Empezando el efecto");
@@ -21,22 +57,9 @@ function UseState({ name }) {
         console.log("Haciendo la validacion");
 
         if (state.value === SECURITY_CODE) {
-          setState({
-            ...state,
-            loading: false,
-            error: false,
-            confirmed: true,
-          });
-          // setLoading(false);
-          // setError(false);
+          onConfirm();
         } else {
-          setState({
-            ...state,
-            loading: false,
-            error: true,
-          });
-          // setLoading(false);
-          // setError(true);
+          onError();
         }
 
         console.log("Terminando la validacion");
@@ -65,9 +88,7 @@ function UseState({ name }) {
         <input
           value={state.value}
           onChange={(event) => {
-            // setError(false); // Este fue
-            // setValue(event.target.value);
-            setState({ ...state, value: event.target.value });
+            onWrite(event.target.value);
           }}
           type="text"
           className="border border-gray-200 rounded-md px-1 py-1 mr-2 outline-none focus:ring-2 focus:ring-blue-400"
@@ -76,9 +97,7 @@ function UseState({ name }) {
         <button
           className="py-1 px-2 rounded-md text-white font-bold bg-blue-400 hover:bg-blue-500"
           onClick={() => {
-            // setError(false); // Este fue
-            // setLoading(true);
-            setState({ ...state, loading: true });
+            onCheck();
           }}
         >
           Comprobar
@@ -95,7 +114,7 @@ function UseState({ name }) {
           <button
             className="py-1 px-2 rounded-md text-white font-bold bg-red-400 hover:bg-red-500"
             onClick={() => {
-              setState({ ...state, deleted: true });
+              onDelete();
             }}
           >
             Si, eliminar
@@ -103,7 +122,7 @@ function UseState({ name }) {
           <button
             className="ml-5 py-1 px-2 rounded-md text-white font-bold bg-gray-400 hover:bg-gray-500"
             onClick={() => {
-              setState({ ...state, confirmed: false, value: "" });
+              onReset();
             }}
           >
             No, arrepenti
@@ -120,12 +139,7 @@ function UseState({ name }) {
           <button
             className="ml-5 py-1 px-2 rounded-md text-white font-bold bg-gray-400 hover:bg-gray-500"
             onClick={() => {
-              setState({
-                ...state,
-                confirmed: false,
-                deleted: false,
-                value: "",
-              });
+              onReset();
             }}
           >
             Resetear, volver atras
