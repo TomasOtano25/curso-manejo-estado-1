@@ -2,6 +2,23 @@ import React from "react";
 
 function UseState({ name }) {
   const [error, setError] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log("Empezando el efecto");
+
+    if (!!loading) {
+      setTimeout(() => {
+        console.log("Haciendo la validacion");
+
+        setLoading(false);
+
+        console.log("Terminando la validacion");
+      }, 300);
+    }
+
+    console.log("Terminando el efecto");
+  }, [loading]);
 
   return (
     <div className="m-12">
@@ -14,6 +31,7 @@ function UseState({ name }) {
       </div>
 
       {error && <p className="text-red-400">Error: El codigo es incorrecto</p>}
+      {loading && <p className="text-green-400">Cargando...</p>}
 
       <input
         type="text"
@@ -22,7 +40,7 @@ function UseState({ name }) {
       />
       <button
         className="py-1 px-2 rounded-md text-white font-bold bg-blue-400 hover:bg-blue-500"
-        onClick={() => setError(!error)}
+        onClick={() => setLoading(true)}
       >
         Comprobar
       </button>

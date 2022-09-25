@@ -1,4 +1,5 @@
 import React from "react";
+import { Loading } from "./Loading";
 
 class ClassState extends React.Component {
   constructor(props) {
@@ -6,7 +7,37 @@ class ClassState extends React.Component {
 
     this.state = {
       error: false,
+      loading: false,
     };
+  }
+
+  // se ejecuta antes de montar el componente
+  // componentWillMount() {
+  UNSAFE_componentWillMount() {
+    console.log("Antes del componente");
+  }
+
+  // se ejecuta despues de montar el componente
+  // componentDidMount() {
+  //   console.log("Despues del componente");
+  // }
+
+  // se ejecuta antes de desmontar el componente
+  // componentWillUnmount() {
+  //   console.log("Antes de desmontar");
+  // }
+
+  // se ejecuta con cada actualizacion del estado
+  componentDidUpdate() {
+    if (!!this.state.loading) {
+      setTimeout(() => {
+        console.log("Haciendo la validacion");
+
+        this.setState({ loading: false });
+
+        console.log("Terminando la validacion");
+      }, 300);
+    }
   }
 
   render() {
@@ -27,6 +58,7 @@ class ClassState extends React.Component {
         {error && (
           <p className="text-red-400">Error: El codigo es incorrecto</p>
         )}
+        {this.state.loading && <Loading />}
 
         <input
           type="text"
@@ -34,12 +66,12 @@ class ClassState extends React.Component {
           placeholder="Codigo de Seguridad"
         />
         <button
-          // onClick={() => this.setState({ error: !error })}
-          onClick={() =>
-            this.setState((prevState) => ({
-              error: !prevState.error,
-            }))
-          }
+          onClick={() => this.setState({ loading: true })}
+          // onClick={() =>
+          //   this.setState((prevState) => ({
+          //     error: !prevState.error,
+          //   }))
+          // }
           className="py-1 px-2 rounded-md text-white font-bold bg-blue-400 hover:bg-blue-500"
         >
           Comprobar
