@@ -1,31 +1,18 @@
 import React from "react";
 import { Loading } from "./Loading";
 
+const SECURITY_CODE = "paradigma";
+
 class ClassState extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      value: "",
       error: false,
       loading: false,
     };
   }
-
-  // se ejecuta antes de montar el componente
-  // componentWillMount() {
-  // UNSAFE_componentWillMount() {
-  //   console.log("componentWillMount");
-  // }
-
-  // se ejecuta despues de montar el componente
-  // componentDidMount() {
-  //   console.log("componentDidMount");
-  // }
-
-  // se ejecuta antes de desmontar el componente
-  // componentWillUnmount() {
-  //   console.log("componentWillUnmount");
-  // }
 
   // se ejecuta con cada actualizacion del estado
   componentDidUpdate() {
@@ -35,7 +22,11 @@ class ClassState extends React.Component {
       setTimeout(() => {
         console.log("Haciendo la validacion");
 
-        this.setState({ loading: false });
+        if (this.state.value === SECURITY_CODE) {
+          this.setState({ error: false, loading: false });
+        } else {
+          this.setState({ error: true, loading: false });
+        }
 
         console.log("Terminando la validacion");
       }, 1000);
@@ -43,7 +34,9 @@ class ClassState extends React.Component {
   }
 
   render() {
-    const { error } = this.state;
+    const { error, value, loading } = this.state;
+
+    console.log(value);
 
     return (
       <div className="m-12">
@@ -57,12 +50,16 @@ class ClassState extends React.Component {
           </p>
         </div>
 
-        {error && (
+        {error && !loading && (
           <p className="text-red-400">Error: El codigo es incorrecto</p>
         )}
         {this.state.loading && <Loading />}
 
         <input
+          value={value}
+          onChange={(event) => {
+            this.setState({ value: event.target.value });
+          }}
           type="text"
           className="border border-gray-200 rounded-md px-1 py-1 mr-2 outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Codigo de Seguridad"

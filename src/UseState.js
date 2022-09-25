@@ -16,7 +16,7 @@ function UseState({ name }) {
 
         if (value === SECURITY_CODE) {
           setLoading(false);
-          setError(false);
+          // setError(false);
         } else {
           setLoading(false);
           setError(true);
@@ -39,12 +39,15 @@ function UseState({ name }) {
         </p>
       </div>
 
-      {error && <p className="text-red-400">Error: El codigo es incorrecto</p>}
+      {error && !loading && (
+        <p className="text-red-400">Error: El codigo es incorrecto</p>
+      )}
       {loading && <p className="text-green-400">Cargando...</p>}
 
       <input
         value={value}
         onChange={(event) => {
+          // setError(false); // Este fue
           setValue(event.target.value);
         }}
         type="text"
@@ -53,7 +56,10 @@ function UseState({ name }) {
       />
       <button
         className="py-1 px-2 rounded-md text-white font-bold bg-blue-400 hover:bg-blue-500"
-        onClick={() => setLoading(true)}
+        onClick={() => {
+          // setError(false); // Este fue
+          setLoading(true);
+        }}
       >
         Comprobar
       </button>
