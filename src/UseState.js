@@ -14,7 +14,7 @@ function UseState({ name }) {
         setLoading(false);
 
         console.log("Terminando la validacion");
-      }, 300);
+      }, 1000);
     }
 
     console.log("Terminando el efecto");

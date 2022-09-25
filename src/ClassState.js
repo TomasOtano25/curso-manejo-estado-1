@@ -13,22 +13,24 @@ class ClassState extends React.Component {
 
   // se ejecuta antes de montar el componente
   // componentWillMount() {
-  UNSAFE_componentWillMount() {
-    console.log("Antes del componente");
-  }
+  // UNSAFE_componentWillMount() {
+  //   console.log("componentWillMount");
+  // }
 
   // se ejecuta despues de montar el componente
   // componentDidMount() {
-  //   console.log("Despues del componente");
+  //   console.log("componentDidMount");
   // }
 
   // se ejecuta antes de desmontar el componente
   // componentWillUnmount() {
-  //   console.log("Antes de desmontar");
+  //   console.log("componentWillUnmount");
   // }
 
   // se ejecuta con cada actualizacion del estado
   componentDidUpdate() {
+    console.log("actualizacion");
+
     if (!!this.state.loading) {
       setTimeout(() => {
         console.log("Haciendo la validacion");
@@ -36,7 +38,7 @@ class ClassState extends React.Component {
         this.setState({ loading: false });
 
         console.log("Terminando la validacion");
-      }, 300);
+      }, 1000);
     }
   }
 
