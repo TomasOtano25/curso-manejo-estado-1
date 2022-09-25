@@ -1,7 +1,9 @@
 import React from "react";
 
 class ClassState extends React.Component {
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   render() {
     return (

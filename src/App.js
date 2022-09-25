@@ -7,7 +7,8 @@ function App() {
   return (
     <div className="App">
       <UseState />
-      <ClasState />
+      <hr />
+      <ClassState />
     </div>
   );
 }
