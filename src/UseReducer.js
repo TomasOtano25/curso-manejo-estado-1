@@ -5,6 +5,21 @@ const SECURITY_CODE = "paradigma";
 function UseReducer({ name }) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+  // Action creators
+  const onConfirm = () => dispatch({ type: actionTypes.confirm });
+  const onError = () => dispatch({ type: actionTypes.error });
+  const onCheck = () => dispatch({ type: actionTypes.check });
+  const onDelete = () => dispatch({ type: actionTypes.delete });
+  const onReset = () => dispatch({ type: actionTypes.reset });
+
+  const onWrite = ({ target: { value } }) => {
+    dispatch({ type: actionTypes.write, payload: value });
+  };
+
+  // const onWrite = (event) => {
+  //   dispatch({ type: actionTypes.write, payload: event.target.value });
+  // };
+
   React.useEffect(() => {
     console.log("Empezando el efecto");
 
@@ -13,10 +28,9 @@ function UseReducer({ name }) {
         console.log("Haciendo la validacion");
 
         if (state.value === SECURITY_CODE) {
-          //   onConfirm();
-          dispatch({ type: "CONFIRM" });
+          onConfirm();
         } else {
-          dispatch({ type: "ERROR" });
+          onError();
         }
 
         console.log("Terminando la validacion");
@@ -44,21 +58,20 @@ function UseReducer({ name }) {
 
         <input
           value={state.value}
-          onChange={(event) => {
-            dispatch({ type: "WRITE", payload: event.target.value });
-            // dispatch({ type: "WRITE", payload: { inputValue: "Valor" } });
-            // onWrite(event.target.value);
-          }}
+          onChange={onWrite}
+          // onChange={(event) => {
+          //   onWrite(event.target.value);
+          //   // dispatch({ type: actionTypes.write, payload: event.target.value });
+          //   // dispatch({ type: "WRITE", payload: { inputValue: "Valor" } });
+          //   // onWrite(event.target.value);
+          // }}
           type="text"
           className="border border-gray-200 rounded-md px-1 py-1 mr-2 outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Codigo de Seguridad"
         />
         <button
           className="py-1 px-2 rounded-md text-white font-bold bg-blue-400 hover:bg-blue-500"
-          onClick={() => {
-            dispatch({ type: "CHECK" });
-            // onCheck();
-          }}
+          onClick={onCheck}
         >
           Comprobar
         </button>
@@ -73,19 +86,13 @@ function UseReducer({ name }) {
           </p>
           <button
             className="py-1 px-2 rounded-md text-white font-bold bg-red-400 hover:bg-red-500"
-            onClick={() => {
-              dispatch({ type: "DELETE" });
-              //   onDelete();
-            }}
+            onClick={onDelete}
           >
             Si, eliminar
           </button>
           <button
             className="ml-5 py-1 px-2 rounded-md text-white font-bold bg-gray-400 hover:bg-gray-500"
-            onClick={() => {
-              dispatch({ type: "RESET" });
-              //   onReset();
-            }}
+            onClick={onReset}
           >
             No, arrepenti
           </button>
@@ -100,10 +107,7 @@ function UseReducer({ name }) {
 
           <button
             className="ml-5 py-1 px-2 rounded-md text-white font-bold bg-gray-400 hover:bg-gray-500"
-            onClick={() => {
-              dispatch({ type: "RESET" });
-              //   onReset();
-            }}
+            onClick={onReset}
           >
             Resetear, volver atras
           </button>
@@ -115,11 +119,20 @@ function UseReducer({ name }) {
 
 // Estado compuesto inicial
 const initialState = {
-  value: "paradigma",
+  value: "",
   error: false,
   loading: false,
   deleted: false,
   confirmed: false,
+};
+
+const actionTypes = {
+  confirm: "CONFIRM",
+  error: "ERROR",
+  check: "CHECK",
+  write: "WRITE",
+  delete: "DELETE",
+  reset: "RESET",
 };
 
 // action.type
@@ -189,32 +202,32 @@ const initialState = {
 // };
 
 const reducerObject = (state, payload) => ({
-  ERROR: {
+  [actionTypes.error]: {
     ...state,
     error: true,
     loading: false,
   },
-  CHECK: {
+  [actionTypes.check]: {
     ...state,
     loading: true,
   },
-  CONFIRM: {
+  [actionTypes.confirm]: {
     ...state,
     loading: false,
     error: false,
     confirmed: true,
   },
-  DELETE: {
+  [actionTypes.delete]: {
     ...state,
     deleted: true,
   },
-  RESET: {
+  [actionTypes.reset]: {
     ...state,
     confirmed: false,
     deleted: false,
     value: "",
   },
-  WRITE: {
+  [actionTypes.write]: {
     ...state,
     value: payload,
   },
